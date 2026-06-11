@@ -22,6 +22,8 @@ interface CartState {
     address: string
     notes?: string
     paymentReference?: string
+    paymentProofUrl: string
+    paymentProofName?: string
   }) => Promise<{ ok: boolean; error?: string; order?: Record<string, unknown> }>
 }
 
@@ -86,7 +88,13 @@ export const useCartStore = create<CartState>()(
         const discount = get().getDiscount(customerPoints)
         return subtotal * (1 - discount) + get().shippingCost
       },
-      submitOrder: async ({ address, notes, paymentReference }) => {
+      submitOrder: async ({
+        address,
+        notes,
+        paymentReference,
+        paymentProofUrl,
+        paymentProofName,
+      }) => {
         const { items, shippingCost, shippingMethod } = get()
         if (items.length === 0) return { ok: false, error: 'Carrito vacío' }
         try {
@@ -102,6 +110,8 @@ export const useCartStore = create<CartState>()(
             notes: notes || '',
             payment_method: 'sinpe_movil',
             payment_reference: paymentReference || '',
+            payment_proof_url: paymentProofUrl,
+            payment_proof_name: paymentProofName || '',
           })
           get().clearCart()
           return { ok: true, order: res.order as Record<string, unknown> }

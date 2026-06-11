@@ -91,6 +91,19 @@ export const api = {
   },
 
   orders: {
+    uploadPaymentProof: (file: File) => {
+      const form = new FormData()
+      form.append('file', file)
+      return fetch(`${API_BASE}/orders/payment-proof`, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${getToken()}` },
+        body: form,
+      }).then(async (res) => {
+        const data = await res.json().catch(() => ({ error: res.statusText }))
+        if (!res.ok) throw new Error(data.error || `Error ${res.status}`)
+        return data as { url: string; filename: string }
+      })
+    },
     list: () => api.get<{ orders: unknown[] }>('/orders'),
     create: (data: {
       items: unknown[]
@@ -100,6 +113,8 @@ export const api = {
       notes?: string
       payment_method?: string
       payment_reference?: string
+      payment_proof_url?: string
+      payment_proof_name?: string
     }) => api.post<{ order: unknown }>('/orders', data),
   },
 

@@ -1,0 +1,2 @@
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS payment_proof_url TEXT DEFAULT '';
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS payment_proof_name TEXT DEFAULT '';

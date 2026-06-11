@@ -14,22 +14,31 @@ const defaultForm = {
   notes: '',
 }
 
+const defaultProps = {
+  form: defaultForm,
+  onChange: vi.fn(),
+  onProofFileChange: vi.fn(),
+  proofFileName: '',
+  proofUploading: false,
+}
+
 describe('CheckoutForm', () => {
   it('renders all form fields', () => {
-    render(<CheckoutForm form={defaultForm} onChange={vi.fn()} />)
+    render(<CheckoutForm {...defaultProps} />)
     expect(screen.getByLabelText(/nombre completo/i)).toBeDefined()
-    expect(screen.getByLabelText(/teléfono/i)).toBeDefined()
+    expect(screen.getByLabelText(/tel/i)).toBeDefined()
     expect(screen.getByLabelText(/provincia/i)).toBeDefined()
-    expect(screen.getByLabelText(/cantón/i)).toBeDefined()
+    expect(screen.getByLabelText(/cant/i)).toBeDefined()
     expect(screen.getByLabelText(/distrito/i)).toBeDefined()
     expect(screen.getByLabelText(/señas exactas/i)).toBeDefined()
     expect(screen.getByLabelText(/notas adicionales/i)).toBeDefined()
+    expect(screen.getByLabelText(/comprobante sinpe/i)).toBeDefined()
   })
 
   it('calls onChange when typing in name field', async () => {
     const onChange = vi.fn()
     const user = userEvent.setup()
-    render(<CheckoutForm form={defaultForm} onChange={onChange} />)
+    render(<CheckoutForm {...defaultProps} onChange={onChange} />)
     const input = screen.getByLabelText(/nombre completo/i)
     await user.type(input, 'V')
     expect(onChange).toHaveBeenCalledWith('name', 'V')
@@ -37,7 +46,7 @@ describe('CheckoutForm', () => {
 
   it('displays current form values', () => {
     const form = { ...defaultForm, name: 'Valentina', phone: '8888-7777' }
-    render(<CheckoutForm form={form} onChange={vi.fn()} />)
+    render(<CheckoutForm {...defaultProps} form={form} />)
     expect(screen.getByDisplayValue('Valentina')).toBeDefined()
     expect(screen.getByDisplayValue('8888-7777')).toBeDefined()
   })

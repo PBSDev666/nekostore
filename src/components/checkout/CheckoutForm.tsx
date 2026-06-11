@@ -10,9 +10,18 @@ interface CheckoutFormProps {
     notes: string
   }
   onChange: (field: string, value: string) => void
+  onProofFileChange: (file: File | null) => void
+  proofFileName: string
+  proofUploading: boolean
 }
 
-export default function CheckoutForm({ form, onChange }: CheckoutFormProps) {
+export default function CheckoutForm({
+  form,
+  onChange,
+  onProofFileChange,
+  proofFileName,
+  proofUploading,
+}: CheckoutFormProps) {
   return (
     <>
       <div className='form-group'>
@@ -101,6 +110,23 @@ export default function CheckoutForm({ form, onChange }: CheckoutFormProps) {
           onChange={(e) => onChange('sinpeReference', e.target.value)}
           placeholder='Numero de comprobante o ultimos digitos'
         />
+      </div>
+      <div className='form-group'>
+        <label htmlFor='checkout-payment-proof'>
+          Comprobante SINPE <small className='req'>*</small>
+        </label>
+        <input
+          id='checkout-payment-proof'
+          type='file'
+          accept='image/png,image/jpeg,image/webp,application/pdf'
+          onChange={(e) => onProofFileChange(e.target.files?.[0] ?? null)}
+          required
+        />
+        <p className='login-desc'>
+          {proofUploading
+            ? 'Subiendo comprobante...'
+            : proofFileName || 'Adjunta captura o PDF del SINPE.'}
+        </p>
       </div>
     </>
   )

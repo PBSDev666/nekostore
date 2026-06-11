@@ -1,4 +1,6 @@
+import multipart from '@fastify/multipart'
 import pool from '../db.js'
+import { saveFile } from '../upload.js'
 
 const RESERVATION_MINUTES = 30
 
@@ -11,6 +13,22 @@ function rowId(prefix) {
 }
 
 export default async function ordersRoutes(app) {
+  await app.register(multipart, { limits: { fileSize: 10 * 1024 * 1024 } })
+
+  app.post('/payment-proof', { onRequest: [app.authenticate] }, async (request, reply) => {
+    const data = await request.file()
+    if (!data) return reply.code(400).send({ error: 'Comprobante requerido' })
+
+    const allowed = ['image/jpeg', 'image/png', 'image/webp', 'application/pdf']
+    if (!allowed.includes(data.mimetype)) {
+      return reply.code(400).send({ error: 'Formato no permitido. Usa imagen o PDF.' })
+    }
+
+    const buffer = await data.toBuffer()
+    const url = saveFile(buffer, data.filename)
+    reply.send({ url, filename: data.filename })
+  })
+
   app.post('/', { onRequest: [app.authenticate] }, async (request, reply) => {
     const {
       items,
@@ -20,10 +38,15 @@ export default async function ordersRoutes(app) {
       notes,
       payment_method,
       payment_reference,
+      payment_proof_url,
+      payment_proof_name,
     } = request.body
 
     if (!Array.isArray(items) || items.length === 0) {
       return reply.code(400).send({ error: 'Se requiere al menos un item' })
+    }
+    if (!payment_proof_url) {
+      return reply.code(400).send({ error: 'Comprobante SINPE requerido' })
     }
 
     const customerResult = await pool.query(
@@ -96,13 +119,13 @@ export default async function ordersRoutes(app) {
           id, customer_id, customer_name, customer_phone, customer_email,
           shipping_address, shipping_method, shipping_cost, status,
           items_total, total, notes, points_earned, payment_method,
-          payment_reference, payment_status, reserved_until
+          payment_reference, payment_proof_url, payment_proof_name, payment_status, reserved_until
         )
         VALUES (
           $1, $2, $3, $4, $5,
           $6, $7, $8, 'pending_payment',
           $9, $10, $11, $12, $13,
-          $14, 'pending', NOW() + ($15 || ' minutes')::interval
+          $14, $15, $16, 'pending', NOW() + ($17 || ' minutes')::interval
         )
         RETURNING *`,
         [
@@ -120,6 +143,8 @@ export default async function ordersRoutes(app) {
           pointsEarned,
           payment_method || 'sinpe_movil',
           payment_reference || '',
+          payment_proof_url,
+          payment_proof_name || '',
           RESERVATION_MINUTES,
         ],
       )
