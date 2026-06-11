@@ -6,6 +6,8 @@ interface ProductGridProps {
   featured?: boolean
 }
 
+const FEATURED_PRODUCT_LIMIT = 12
+
 export default function ProductGrid({ featured = false }: ProductGridProps) {
   const activeFilter = useUIStore((s) => s.activeFilter)
   const products = useProductStore((s) => s.items)
@@ -16,7 +18,7 @@ export default function ProductGrid({ featured = false }: ProductGridProps) {
     .sort((a, b) => (a.featuredSortOrder ?? 0) - (b.featuredSortOrder ?? 0))
   const filtered = featured
     ? featuredProducts.length > 0
-      ? featuredProducts
+      ? featuredProducts.slice(0, FEATURED_PRODUCT_LIMIT)
       : products.slice(0, 4)
     : products.filter((p) => {
         if (activeFilter !== 'all' && p.category !== activeFilter) return false
@@ -47,7 +49,10 @@ export default function ProductGrid({ featured = false }: ProductGridProps) {
   }
 
   return (
-    <ul className='products-grid' aria-label='Catálogo de productos'>
+    <ul
+      className={`products-grid ${featured ? 'products-grid--featured' : ''}`}
+      aria-label={featured ? 'Productos destacados' : 'Catalogo de productos'}
+    >
       {filtered.map((product) => (
         <li key={product.id} className='products-grid__item'>
           <ProductCard product={product} />

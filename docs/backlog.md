@@ -45,7 +45,7 @@ Actualizado tras revisar CodeGraph y BMAD:
 | MONEY-001 | Pendiente | P0 | Colones en todo el sitio | Quitar simbolos `$` restantes, incluido carrito |
 | CMS-ABOUT-001 | Activo | P1 | Nosotros editable desde CMS | Imagen `nosotros.png` y copy deben venir de DB/admin |
 | CMS-CONTACT-001 | Activo | P1 | Fondo contacto opcional | Parallax/fondo forms activable, default `/brand/contacto.png`, upload custom |
-| HOME-FEATURED-001 | Activo | P1 | Destacados home estilo WooCommerce | Marcar productos destacados y orden desde admin |
+| HOME-FEATURED-001 | Hecho | P1 | Destacados home estilo WooCommerce | Admin permite marcar/ordenar; home muestra hasta 12 productos destacados centrados |
 | UI-IMG-001 | Activo | P1 | Imagenes ancladas arriba | `object-position: top center`; despues agregar control admin |
 | UI-SKELETON-001 | Pendiente | P1 | Skeletons de productos | Evitar layout roto mientras carga data/imagenes |
 | UI-PLACEHOLDER-001 | Pendiente | P1 | Placeholder con logo | Productos sin imagen muestran gato + texto NEKO |
