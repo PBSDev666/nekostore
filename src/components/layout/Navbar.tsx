@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useInstallPrompt } from '@/hooks/useInstallPrompt'
 import { useAuthStore } from '@/stores/authStore'
@@ -17,6 +18,7 @@ const NAV_LINKS = [
 export default function Navbar() {
   const navigate = useNavigate()
   const location = useLocation()
+  const [menuOpen, setMenuOpen] = useState(false)
   const { canInstall, install } = useInstallPrompt()
   const token = useAuthStore((s) => s.token)
   const itemCount = useCartStore((s) => s.items.reduce((sum, i) => sum + i.quantity, 0))
@@ -24,19 +26,41 @@ export default function Navbar() {
   const toggleCart = useUIStore((s) => s.toggleCart)
   const toggleNotif = useUIStore((s) => s.toggleNotif)
 
+  useEffect(() => {
+    setMenuOpen(false)
+  }, [location.pathname])
+
+  const goTo = (path: string) => {
+    navigate(path)
+    setMenuOpen(false)
+  }
+
   return (
-    <nav className='navbar' aria-label='Navegación principal'>
-      <button className='navbar__logo' onClick={() => navigate('/')} type='button'>
+    <nav className={`navbar ${menuOpen ? 'navbar--open' : ''}`} aria-label='Navegación principal'>
+      <button className='navbar__logo' onClick={() => goTo('/')} type='button'>
         <img className='logo-mark' src='/brand/neko-logo-cat.png' alt='' aria-hidden='true' />
         <img className='logo-wordmark' src='/brand/neko-logo-text.png' alt='Neko Store' />
       </button>
 
-      <div className='navbar__links'>
+      <button
+        className='navbar__menu-toggle'
+        type='button'
+        aria-label={menuOpen ? 'Cerrar menú' : 'Abrir menú'}
+        aria-expanded={menuOpen}
+        aria-controls='primary-navigation'
+        onClick={() => setMenuOpen((open) => !open)}
+      >
+        <span className='navbar__menu-line navbar__menu-line--top' />
+        <span className='navbar__menu-line navbar__menu-line--middle' />
+        <span className='navbar__menu-line navbar__menu-line--bottom' />
+      </button>
+
+      <div id='primary-navigation' className='navbar__links'>
         {NAV_LINKS.map((link) => (
           <button
             key={link.path}
             className={`nav-link ${location.pathname === link.path ? 'active' : ''}`}
-            onClick={() => navigate(link.path)}
+            onClick={() => goTo(link.path)}
             type='button'
           >
             {link.label}
@@ -83,7 +107,7 @@ export default function Navbar() {
         )}
         <button
           className='btn-icon'
-          onClick={() => navigate('/cuenta')}
+          onClick={() => goTo('/cuenta')}
           title='Mi cuenta'
           type='button'
         >
