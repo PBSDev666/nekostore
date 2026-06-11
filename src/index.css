@@ -647,7 +647,7 @@ b,
 .pwa-section {
   max-width: var(--max-width);
   margin: 0 auto 72px;
-  padding: 0 var(--gutter);
+  padding: 0 48px;
   display: grid;
   grid-template-columns: minmax(0, 1fr) 220px minmax(320px, 0.9fr);
   gap: 34px;
@@ -2605,6 +2605,7 @@ b,
     grid-template-columns: 1fr;
     gap: 22px;
     margin-bottom: 52px;
+    padding: 0 24px;
   }
   .pwa-section__visual {
     order: -1;
