@@ -170,6 +170,9 @@ PORT=${{PORT}}
 VAPID_PUBLIC_KEY=
 VAPID_PRIVATE_KEY=
 VAPID_SUBJECT=mailto:hola@nekostore.cr
+WHATSAPP_ACCESS_TOKEN=
+WHATSAPP_PHONE_NUMBER_ID=
+WHATSAPP_GRAPH_VERSION=v20.0
 ```
 
 Notas:
@@ -271,6 +274,9 @@ Validar manualmente:
 | `VAPID_PUBLIC_KEY` | Opcional | Web Push. |
 | `VAPID_PRIVATE_KEY` | Opcional | Web Push. |
 | `VAPID_SUBJECT` | Opcional | Contacto Web Push. |
+| `WHATSAPP_ACCESS_TOKEN` | Opcional | Token de WhatsApp Cloud API para enviar OTP. |
+| `WHATSAPP_PHONE_NUMBER_ID` | Opcional | Phone Number ID de WhatsApp Cloud API. |
+| `WHATSAPP_GRAPH_VERSION` | Opcional | Version Graph API, default `v20.0`. |
 
 Generar VAPID keys:
 

@@ -2,8 +2,50 @@ import bcrypt from 'bcrypt'
 import pool from '../db.js'
 import { sendPushToRole } from '../services/push.js'
 
+function normalizeCRPhone(phone) {
+  const clean = phone.replace(/\D/g, '')
+  return clean.length === 8 ? `506${clean}` : clean
+}
+
 function generateCode() {
   return Math.floor(100000 + Math.random() * 900000).toString()
+}
+
+async function sendWhatsAppText(phone, message) {
+  const accessToken = process.env.WHATSAPP_ACCESS_TOKEN
+  const phoneNumberId = process.env.WHATSAPP_PHONE_NUMBER_ID
+  const graphVersion = process.env.WHATSAPP_GRAPH_VERSION || 'v20.0'
+
+  if (!accessToken || !phoneNumberId) {
+    return { sent: false, reason: 'missing_config' }
+  }
+
+  const response = await fetch(
+    `https://graph.facebook.com/${graphVersion}/${phoneNumberId}/messages`,
+    {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        messaging_product: 'whatsapp',
+        to: normalizeCRPhone(phone),
+        type: 'text',
+        text: {
+          preview_url: false,
+          body: message,
+        },
+      }),
+    },
+  )
+
+  if (!response.ok) {
+    const error = await response.text().catch(() => response.statusText)
+    return { sent: false, reason: error }
+  }
+
+  return { sent: true }
 }
 
 export default async function customerAuthRoutes(app) {
@@ -16,6 +58,7 @@ export default async function customerAuthRoutes(app) {
     const clean = phone.replace(/\D/g, '')
     const code = generateCode()
     const id = `otp-${Date.now().toString(36)}`
+    const otpMessage = `Tu codigo NEKO Store es ${code}. Expira en 5 minutos. Si no lo solicitaste, ignora este mensaje.`
 
     await pool.query(
       `INSERT INTO customer_otp (id, phone, code, expires_at)
@@ -23,21 +66,30 @@ export default async function customerAuthRoutes(app) {
       [id, clean, code],
     )
 
-    await pool.query(
-      `INSERT INTO notifications (id, type, title, message, icon, for_role, read)
-       VALUES ($1, 'otp', 'OTP pendiente', $2, 'WA', 'admin', false)`,
-      [`notif-${Date.now().toString(36)}`, `Enviar codigo ${code} por WhatsApp a ${clean}`],
-    )
+    const delivery = await sendWhatsAppText(clean, otpMessage)
+    if (!delivery.sent) {
+      await pool.query(
+        `INSERT INTO notifications (id, type, title, message, icon, for_role, read)
+         VALUES ($1, 'otp', 'OTP pendiente', $2, 'WA', 'admin', false)`,
+        [`notif-${Date.now().toString(36)}`, `Enviar codigo ${code} por WhatsApp a ${clean}`],
+      )
 
-    await sendPushToRole('admin', {
-      title: 'OTP pendiente',
-      body: `Enviar codigo ${code} por WhatsApp a ${clean}`,
-      url: '/admin',
-    })
+      await sendPushToRole('admin', {
+        title: 'OTP pendiente',
+        body: `Enviar codigo ${code} por WhatsApp a ${clean}`,
+        url: '/admin',
+      })
+    }
 
     console.log(`[OTP] Code for ${clean}: ${code}`)
 
-    reply.send({ ok: true, message: 'C\u00F3digo enviado por WhatsApp' })
+    reply.send({
+      ok: true,
+      delivery: delivery.sent ? 'whatsapp_cloud' : 'manual',
+      message: delivery.sent
+        ? 'Codigo enviado por WhatsApp.'
+        : 'Codigo generado. NEKO debe enviarlo manualmente por WhatsApp.',
+    })
   })
 
   app.post('/verify-code', async (request, reply) => {

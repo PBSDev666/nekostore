@@ -69,7 +69,10 @@ export const cmsApi = {
 
   customerAuth: {
     sendCode: (phone: string) =>
-      api.post<{ ok: boolean; message: string }>('/customer-auth/send-code', { phone }),
+      api.post<{ ok: boolean; message: string; delivery?: 'whatsapp_cloud' | 'manual' }>(
+        '/customer-auth/send-code',
+        { phone },
+      ),
     verifyCode: (phone: string, code: string) =>
       api.post<{ token: string; user: unknown; expiresIn: number }>('/customer-auth/verify-code', {
         phone,

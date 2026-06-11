@@ -22,9 +22,14 @@ export default function CustomerOTPLogin() {
     }
     setSending(true)
     try {
-      await cmsApi.customerAuth.sendCode(clean)
+      const result = await cmsApi.customerAuth.sendCode(clean)
       setStep('code')
-      pushNotif({ icon: 'WA', title: 'Codigo enviado', msg: 'Revisa tu WhatsApp', type: 'success' })
+      pushNotif({
+        icon: 'WA',
+        title: result.delivery === 'manual' ? 'Codigo pendiente' : 'Codigo enviado',
+        msg: result.message,
+        type: result.delivery === 'manual' ? 'warning' : 'success',
+      })
     } catch (err) {
       pushNotif({ icon: '!', title: 'Error', msg: (err as Error).message, type: 'error' })
     } finally {
