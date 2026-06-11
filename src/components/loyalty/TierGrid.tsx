@@ -16,7 +16,7 @@ const TIER_BENEFITS: Record<string, string[]> = {
   SOMBRA: ['8% de descuento', 'Acceso anticipado a nuevos drops', 'Notificaciones VIP'],
   ECLIPSE: [
     '12% de descuento',
-    'Envío gratis en compras >$100',
+    'Envío gratis en compras >₡50.000',
     'Recompensas exclusivas',
     'Soporte prioritario',
   ],

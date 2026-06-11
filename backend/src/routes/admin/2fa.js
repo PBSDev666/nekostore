@@ -1,3 +1,4 @@
+import bcrypt from 'bcrypt'
 import { authenticator } from 'otplib'
 import QRCode from 'qrcode'
 import pool from '../../db.js'
@@ -77,6 +78,7 @@ export default async function admin2faRoutes(app) {
   app.post('/login', async (request, reply) => {
     const { adminId, token } = request.body
     if (!adminId || !token) return reply.code(400).send({ error: 'adminId y token requeridos' })
+    if (adminId !== 'admin_neko') return reply.code(403).send({ error: 'Admin no autorizado' })
 
     const result = await pool.query('SELECT * FROM admin_2fa WHERE admin_id = $1', [adminId])
     const row = result.rows[0]
@@ -111,5 +113,45 @@ export default async function admin2faRoutes(app) {
     }
 
     reply.code(400).send({ error: 'C\u00F3digo inv\u00E1lido' })
+  })
+
+  app.put('/password', { onRequest: [app.requireAdmin] }, async (request, reply) => {
+    const { currentPassword, newPassword, token } = request.body
+    if (!currentPassword || !newPassword) {
+      return reply.code(400).send({ error: 'Contrasena actual y nueva requeridas' })
+    }
+    if (typeof newPassword !== 'string' || newPassword.length < 8 || newPassword.length > 64) {
+      return reply.code(400).send({ error: 'La nueva contrasena debe tener de 8 a 64 caracteres' })
+    }
+    if (!/[A-Za-z]/.test(newPassword) || !/\d/.test(newPassword)) {
+      return reply.code(400).send({ error: 'La nueva contrasena debe incluir letras y numeros' })
+    }
+
+    const adminResult = await pool.query(
+      'SELECT id, password_hash FROM customers WHERE id = $1 AND role = $2',
+      [request.user.id, 'admin'],
+    )
+    const admin = adminResult.rows[0]
+    if (!admin) return reply.code(403).send({ error: 'Admin no autorizado' })
+
+    const passwordOk = await bcrypt.compare(currentPassword, admin.password_hash)
+    if (!passwordOk) return reply.code(401).send({ error: 'Contrasena actual invalida' })
+
+    const twoFactor = await pool.query(
+      'SELECT secret, enabled FROM admin_2fa WHERE admin_id = $1',
+      [request.user.id],
+    )
+    const twoFactorEnabled = twoFactor.rows[0]?.enabled === true
+    if (twoFactorEnabled && !authenticator.check(String(token || ''), twoFactor.rows[0].secret)) {
+      return reply.code(400).send({ error: 'Codigo 2FA invalido' })
+    }
+
+    const hash = await bcrypt.hash(newPassword, 10)
+    await pool.query('UPDATE customers SET password_hash = $1, updated_at = NOW() WHERE id = $2', [
+      hash,
+      request.user.id,
+    ])
+
+    reply.send({ ok: true })
   })
 }

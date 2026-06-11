@@ -116,7 +116,7 @@ export default function AdminLogin() {
           </>
         )}
 
-        <p className='admin-login__hint'>Dev local: admin@nekostore.cr / admin123</p>
+        <p className='admin-login__hint'>Usa las credenciales admin configuradas para NEKO.</p>
       </div>
     </div>
   )

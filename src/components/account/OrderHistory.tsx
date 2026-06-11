@@ -1,3 +1,4 @@
+import { useConfigStore } from '@/stores/configStore'
 import type { Order } from '@/types/order'
 
 interface OrderHistoryProps {
@@ -5,6 +6,8 @@ interface OrderHistoryProps {
 }
 
 export default function OrderHistory({ orders }: OrderHistoryProps) {
+  const currencySymbol = useConfigStore((s) => s.config.currencySymbol)
+
   if (orders.length === 0) {
     return (
       <div className='no-orders'>
@@ -33,7 +36,10 @@ export default function OrderHistory({ orders }: OrderHistoryProps) {
           <div style={{ textAlign: 'right' }}>
             <span className={`order-status order-status--${order.status}`}>{order.status}</span>
             <div className='order-total-row'>
-              <span className='order-total-val'>${order.total}</span>
+              <span className='order-total-val'>
+                {currencySymbol}
+                {order.total}
+              </span>
               {order.pointsEarned > 0 && (
                 <span className='order-points-earned'>+{order.pointsEarned} pts</span>
               )}

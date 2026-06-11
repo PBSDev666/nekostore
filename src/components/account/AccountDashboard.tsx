@@ -107,7 +107,6 @@ export default function AccountDashboard() {
         <div className='account-info'>
           <h2>{customer.name || 'Sin nombre'}</h2>
           <p>{formatCRPhone(customer.phone)}</p>
-          {customer.isDemo && <span className='demo-badge'>Demo</span>}
           <button
             onClick={logout}
             style={{

@@ -1,4 +1,5 @@
 import { useMemo } from 'react'
+import { useConfigStore } from '@/stores/configStore'
 import { useProductStore } from '@/stores/productStore'
 
 interface CategoryProjection {
@@ -12,6 +13,7 @@ interface CategoryProjection {
 
 export default function SalesProjection() {
   const PRODUCTS = useProductStore((s) => s.items)
+  const currencySymbol = useConfigStore((s) => s.config.currencySymbol)
   const projection = useMemo(() => {
     const getStock = (p: (typeof PRODUCTS)[number]) => p.stock ?? 0
     const totalStock = PRODUCTS.reduce((s, p) => s + getStock(p), 0)
@@ -83,7 +85,7 @@ export default function SalesProjection() {
       weeksToSellOut,
       productCount: PRODUCTS.length,
     }
-  }, [])
+  }, [PRODUCTS])
 
   return (
     <div className='sales-projection'>
@@ -97,26 +99,32 @@ export default function SalesProjection() {
         <div className='sales-projection__card highlight'>
           <span className='sales-projection__card-label'>Ingreso Potencial Total</span>
           <span className='sales-projection__card-value'>
-            ${projection.totalPotentialRevenue.toLocaleString()}
+            {currencySymbol}
+            {projection.totalPotentialRevenue.toLocaleString()}
           </span>
           <span className='sales-projection__card-sub'>Si se vende todo el inventario actual</span>
         </div>
         <div className='sales-projection__card'>
           <span className='sales-projection__card-label'>Costo Total de Inventario</span>
           <span className='sales-projection__card-value'>
-            ${projection.totalCost.toLocaleString()}
+            {currencySymbol}
+            {projection.totalCost.toLocaleString()}
           </span>
         </div>
         <div className='sales-projection__card highlight'>
           <span className='sales-projection__card-label'>Margen Bruto Estimado</span>
           <span className='sales-projection__card-value'>
-            ${projection.totalMargin.toLocaleString()}
+            {currencySymbol}
+            {projection.totalMargin.toLocaleString()}
           </span>
           <span className='sales-projection__card-sub'>{projection.marginPercent}% de margen</span>
         </div>
         <div className='sales-projection__card'>
           <span className='sales-projection__card-label'>Precio Promedio</span>
-          <span className='sales-projection__card-value'>${projection.avgPrice}</span>
+          <span className='sales-projection__card-value'>
+            {currencySymbol}
+            {projection.avgPrice}
+          </span>
         </div>
         <div className='sales-projection__card'>
           <span className='sales-projection__card-label'>Stock Total</span>
@@ -157,8 +165,14 @@ export default function SalesProjection() {
                   <td className='cap'>{cat.category}</td>
                   <td>{cat.productCount}</td>
                   <td>{cat.totalStock}</td>
-                  <td>${cat.totalCost.toLocaleString()}</td>
-                  <td>${cat.potentialRevenue.toLocaleString()}</td>
+                  <td>
+                    {currencySymbol}
+                    {cat.totalCost.toLocaleString()}
+                  </td>
+                  <td>
+                    {currencySymbol}
+                    {cat.potentialRevenue.toLocaleString()}
+                  </td>
                   <td>{catMarginPct}%</td>
                 </tr>
               )
@@ -188,7 +202,10 @@ export default function SalesProjection() {
                     <tr key={p.id} className={st === 0 ? 'row-danger' : 'row-warning'}>
                       <td>{p.name}</td>
                       <td>{st}</td>
-                      <td>${(st * p.price).toLocaleString()}</td>
+                      <td>
+                        {currencySymbol}
+                        {(st * p.price).toLocaleString()}
+                      </td>
                     </tr>
                   )
                 })}
@@ -215,9 +232,15 @@ export default function SalesProjection() {
                 return (
                   <tr key={p.id}>
                     <td>{p.name}</td>
-                    <td>${unitMargin}</td>
+                    <td>
+                      {currencySymbol}
+                      {unitMargin}
+                    </td>
                     <td>{st}</td>
-                    <td>${(unitMargin * st).toLocaleString()}</td>
+                    <td>
+                      {currencySymbol}
+                      {(unitMargin * st).toLocaleString()}
+                    </td>
                   </tr>
                 )
               })}

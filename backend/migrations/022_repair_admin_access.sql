@@ -1,3 +1,7 @@
+UPDATE customers
+SET role = 'customer', updated_at = NOW()
+WHERE role = 'admin' AND id <> 'admin_neko';
+
 INSERT INTO customers (
   id,
   name,
@@ -10,7 +14,8 @@ INSERT INTO customers (
   tier,
   role,
   is_demo,
-  created_at
+  created_at,
+  updated_at
 ) VALUES (
   'admin_neko',
   'Admin NEKO',
@@ -23,6 +28,7 @@ INSERT INTO customers (
   'NEKO NOIR',
   'admin',
   FALSE,
+  NOW(),
   NOW()
 )
 ON CONFLICT (id) DO UPDATE SET

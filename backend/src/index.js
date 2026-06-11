@@ -57,6 +57,9 @@ app.decorate('requireAdmin', async function (request, reply) {
     if (request.user.role !== 'admin') {
       return reply.code(403).send({ error: 'Se requiere rol admin' })
     }
+    if (request.user.id !== 'admin_neko') {
+      return reply.code(403).send({ error: 'Admin no autorizado' })
+    }
 
     const isTwoFactorRoute = request.url.startsWith('/api/admin/2fa/')
     const twoFactor = await pool.query('SELECT enabled FROM admin_2fa WHERE admin_id = $1', [

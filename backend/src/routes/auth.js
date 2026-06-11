@@ -1,6 +1,8 @@
 import bcrypt from 'bcrypt'
 import pool from '../db.js'
 
+const ADMIN_ID = 'admin_neko'
+
 function publicUser(user) {
   const copy = { ...user }
   delete copy.password_hash
@@ -48,6 +50,9 @@ export default async function authRoutes(app) {
     }
     if (row.role !== 'admin') {
       return reply.code(403).send({ error: 'Clientes ingresan con codigo OTP por WhatsApp' })
+    }
+    if (row.id !== ADMIN_ID) {
+      return reply.code(403).send({ error: 'Admin no autorizado' })
     }
 
     const valid = await bcrypt.compare(password, row.password_hash)

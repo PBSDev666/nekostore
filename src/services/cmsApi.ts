@@ -63,6 +63,8 @@ export const cmsApi = {
           token: verifyToken,
         },
       ),
+    changePassword: (data: { currentPassword: string; newPassword: string; token?: string }) =>
+      api.put<{ ok: boolean }>('/admin/2fa/password', data),
   },
 
   customerAuth: {
