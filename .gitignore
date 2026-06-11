@@ -6,6 +6,12 @@ coverage/
 *.log
 *.err.log
 .env
+.env.local
+.env.production
+.env.railway
 backend/.env
+backend/.env.local
+backend/.env.production
+backend/.env.railway
 tsconfig.tsbuildinfo
 .DS_Store
