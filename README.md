@@ -142,7 +142,7 @@ Arquitectura recomendada:
 
 1. Crear un proyecto nuevo en Railway.
 2. Agregar PostgreSQL.
-3. Agregar el repositorio `CarlosBlancoB/neko_store`.
+3. Agregar el repositorio `PBSDev666/nekostore`.
 4. Crear dos servicios desde el mismo repo: uno para backend y otro para frontend.
 
 ### 2. Backend en Railway
@@ -151,7 +151,7 @@ Configurar el servicio backend:
 
 ```text
 Root Directory: backend
-Build Command: npm install
+Build Command: npm ci
 Start Command: npm start
 Pre-deploy Command: npm run migrate
 ```
@@ -196,8 +196,8 @@ Configurar el servicio frontend:
 
 ```text
 Root Directory: /
-Build Command: npm install && npm run build
-Start Command: npm run preview -- --host 0.0.0.0 --port $PORT
+Build Command: npm ci && npm run build
+Start Command: npm run start
 ```
 
 Variable requerida en `neko-web`:
@@ -207,6 +207,18 @@ VITE_API_URL=https://YOUR_BACKEND_DOMAIN.up.railway.app/api
 ```
 
 Importante: `VITE_API_URL` se inyecta en build time. Si cambia el dominio del backend, volver a desplegar el frontend.
+
+### Si Railway solo ve `README.md`
+
+Si el log dice `The app contents that Railpack analyzed contains: ./ README.md`, Railway no esta recibiendo el repo completo. Revisar:
+
+- Repo conectado: `PBSDev666/nekostore`.
+- Branch: `master`.
+- Frontend `Root Directory`: `/`.
+- Backend `Root Directory`: `backend`.
+- Si se usa Railway CLI, correr el deploy desde `C:\Users\carlo\Documents\pulse\NEKO`, no desde una carpeta que solo tenga un README.
+
+El repo incluye `railway.json` en la raiz para frontend y `backend/railway.json` para API; si Railway recibe los archivos correctos, Railpack debe usar esos comandos.
 
 ### 4. Dominios y CORS
 
