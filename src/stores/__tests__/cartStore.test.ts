@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from 'vitest'
-import { useCartStore } from '@/stores/cartStore'
+import { roundShippingCost, useCartStore } from '@/stores/cartStore'
 import type { Product } from '@/types/product'
 
 const mockProduct: Product = {
@@ -36,7 +36,7 @@ describe('useCartStore', () => {
     })
   })
 
-  it('comienza con carrito vacío', () => {
+  it('comienza con carrito vacio', () => {
     const state = useCartStore.getState()
     expect(state.items).toHaveLength(0)
     expect(state.getItemCount()).toBe(0)
@@ -81,7 +81,7 @@ describe('useCartStore', () => {
     expect(state.items).toHaveLength(0)
   })
 
-  it('elimina item por índice', () => {
+  it('elimina item por indice', () => {
     useCartStore.getState().addItem(mockProduct, 'M')
     useCartStore.getState().addItem(mockProduct2, 'S')
     useCartStore.getState().removeItem(0)
@@ -97,7 +97,7 @@ describe('useCartStore', () => {
     expect(subtotal).toBe(89 + 65)
   })
 
-  it('aplica descuento según tier del cliente', () => {
+  it('aplica descuento segun tier del cliente', () => {
     expect(useCartStore.getState().getDiscount(1)).toBe(0.05)
     expect(useCartStore.getState().getDiscount(500)).toBe(0.08)
     expect(useCartStore.getState().getDiscount(1500)).toBe(0.12)
@@ -108,23 +108,30 @@ describe('useCartStore', () => {
     expect(useCartStore.getState().getDiscount(0)).toBe(0)
   })
 
-  it('calcula total con subtotal + envío - descuento', () => {
+  it('calcula total con subtotal + envio - descuento', () => {
     useCartStore.getState().addItem(mockProduct, 'M')
-    useCartStore.getState().setShipping(5, 'Envío estándar')
+    useCartStore.getState().setShipping(2500, 'Envio estandar')
     const total = useCartStore.getState().getTotal(500)
-    expect(total).toBe(89 * (1 - 0.08) + 5)
+    expect(total).toBe(89 * (1 - 0.08) + 2500)
   })
 
-  it('setShipping actualiza costo y método', () => {
-    useCartStore.getState().setShipping(12, 'Envío express')
+  it('setShipping redondea costo hacia arriba y actualiza metodo', () => {
+    useCartStore.getState().setShipping(2640, 'Envio express')
     const state = useCartStore.getState()
-    expect(state.shippingCost).toBe(12)
-    expect(state.shippingMethod).toBe('Envío express')
+    expect(state.shippingCost).toBe(3000)
+    expect(state.shippingMethod).toBe('Envio express')
   })
 
-  it('clearCart vacía todo', () => {
+  it('roundShippingCost usa bloques cerrados de 500', () => {
+    expect(roundShippingCost(0)).toBe(0)
+    expect(roundShippingCost(2500)).toBe(2500)
+    expect(roundShippingCost(2501)).toBe(3000)
+    expect(roundShippingCost(2640)).toBe(3000)
+  })
+
+  it('clearCart vacia todo', () => {
     useCartStore.getState().addItem(mockProduct, 'M')
-    useCartStore.getState().setShipping(5, 'Envío estándar')
+    useCartStore.getState().setShipping(2500, 'Envio estandar')
     useCartStore.getState().clearCart()
     const state = useCartStore.getState()
     expect(state.items).toHaveLength(0)

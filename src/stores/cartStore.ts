@@ -27,6 +27,11 @@ interface CartState {
   }) => Promise<{ ok: boolean; error?: string; order?: Record<string, unknown> }>
 }
 
+export function roundShippingCost(cost: number): number {
+  if (!Number.isFinite(cost) || cost <= 0) return 0
+  return Math.ceil(cost / 500) * 500
+}
+
 export const useCartStore = create<CartState>()(
   persist(
     (set, get) => ({
@@ -69,7 +74,7 @@ export const useCartStore = create<CartState>()(
       },
 
       setShipping: (cost, method) => {
-        set({ shippingCost: cost, shippingMethod: method })
+        set({ shippingCost: roundShippingCost(cost), shippingMethod: method })
       },
 
       clearCart: () => set({ items: [], shippingCost: 0, shippingMethod: 'Recogida en tienda' }),
