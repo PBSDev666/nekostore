@@ -24,12 +24,17 @@ export default async function adminSiteContentRoutes(app) {
   })
 
   app.get('/public', async (request, reply) => {
-    const result = await pool.query('SELECT * FROM site_content ORDER BY section, sort_order')
-    const grouped = {}
-    for (const row of result.rows) {
-      if (!grouped[row.section]) grouped[row.section] = {}
-      grouped[row.section][row.key] = { value: row.value, image_url: row.image_url }
+    try {
+      const result = await pool.query('SELECT * FROM site_content ORDER BY section, sort_order')
+      const grouped = {}
+      for (const row of result.rows) {
+        if (!grouped[row.section]) grouped[row.section] = {}
+        grouped[row.section][row.key] = { value: row.value, image_url: row.image_url }
+      }
+      reply.send({ content: grouped })
+    } catch (err) {
+      request.log.error(err)
+      reply.send({ content: {}, error: 'Contenido no disponible' })
     }
-    reply.send({ content: grouped })
   })
 }

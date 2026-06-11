@@ -24,7 +24,7 @@ export const useConfigStore = create<ConfigState>()(
       fetchConfig: async () => {
         set({ loading: true, error: null })
         try {
-          const res = await api.admin.branding.get()
+          const res = await api.branding.public()
           const branding = res.branding as Record<string, string>
           set({
             config: {

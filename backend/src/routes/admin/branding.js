@@ -1,6 +1,31 @@
 import pool from '../../db.js'
 
 export default async function adminBrandingRoutes(app) {
+  app.get('/public', async (request, reply) => {
+    try {
+      const result = await pool.query("SELECT value FROM config WHERE key = 'branding'")
+      const branding = result.rows[0]?.value || {
+        logo_url: '',
+        store_name: 'NEKO STORE',
+        tagline: '',
+        primary_color: '#1a1a2e',
+        accent_color: '#c9a96e',
+      }
+      reply.send({ branding })
+    } catch (err) {
+      request.log?.error?.(err)
+      reply.send({
+        branding: {
+          logo_url: '',
+          store_name: 'NEKO STORE',
+          tagline: '',
+          primary_color: '#1a1a2e',
+          accent_color: '#c9a96e',
+        },
+      })
+    }
+  })
+
   app.get('/', { onRequest: [app.requireAdmin] }, async (request, reply) => {
     const result = await pool.query(
       "SELECT value FROM config WHERE key = 'branding'",

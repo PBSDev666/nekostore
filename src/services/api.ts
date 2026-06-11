@@ -52,6 +52,10 @@ export const api = {
     me: () => api.get<{ user: unknown }>('/auth/me'),
   },
 
+  branding: {
+    public: () => api.get<{ branding: unknown }>('/admin/branding/public'),
+  },
+
   products: {
     list: (params?: { category?: string; search?: string }) => {
       const q = new URLSearchParams()
