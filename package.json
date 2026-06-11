@@ -12,7 +12,6 @@
     "format": "biome format .",
     "format:fix": "biome format --write .",
     "typecheck": "tsc --noEmit",
-    "postinstall": "lefthook install 2>nul || ver>nul",
     "test": "vitest",
     "test:run": "vitest run",
     "test:coverage": "vitest run --coverage",
