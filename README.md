@@ -196,7 +196,7 @@ Configurar el servicio frontend:
 
 ```text
 Root Directory: /
-Build Command: npm ci && npm run build
+Build Command: npm install --include=dev && npm run build
 Start Command: npm run start
 ```
 
@@ -219,6 +219,8 @@ Si el log dice `The app contents that Railpack analyzed contains: ./ README.md`,
 - Si se usa Railway CLI, correr el deploy desde `C:\Users\carlo\Documents\pulse\NEKO`, no desde una carpeta que solo tenga un README.
 
 El repo incluye `railway.json` en la raiz para frontend y `backend/railway.json` para API; si Railway recibe los archivos correctos, Railpack debe usar esos comandos.
+
+Si el build falla con `EBUSY: resource busy or locked, rmdir '/app/node_modules/.vite'`, usar el build command del frontend con `npm install --include=dev && npm run build` o limpiar el cache del deploy en Railway antes de redeployar. `npm ci` borra `node_modules` completo y puede chocar con el cache de `.vite` del builder.
 
 ### 4. Dominios y CORS
 
