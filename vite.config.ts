@@ -32,8 +32,8 @@ export default defineConfig({
         importScripts: ['sw-push.js'],
         globPatterns: ['**/*.{js,css,html,ico,png,svg,woff,woff2}'],
         globIgnores: ['**/brand/*.png'],
-        navigateFallback: '/offline.html',
-        navigateFallbackDenylist: [/\/api\//],
+        navigateFallback: '/index.html',
+        navigateFallbackDenylist: [/\/api\//, /^\/offline\.html$/],
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/images\.unsplash\.com\/.*/i,
