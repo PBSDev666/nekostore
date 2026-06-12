@@ -12,9 +12,18 @@ interface ProductImageProps {
 function ProductPlaceholder({ alt }: { alt: string }) {
   return (
     <div className='product-image-placeholder' role='img' aria-label={alt}>
-      <img src='/brand/neko-logo-cat.png' alt='' aria-hidden='true' />
-      <img src='/brand/neko-logo-text.png' alt='NEKO Store' />
-      <span>Imagen pendiente</span>
+      <img
+        className='product-image-placeholder__cat'
+        src='/brand/neko-logo-cat.png'
+        alt=''
+        aria-hidden='true'
+      />
+      <img
+        className='product-image-placeholder__wordmark'
+        src='/brand/neko-logo-text.png'
+        alt='NEKO Store'
+      />
+      <span className='product-image-placeholder__copy'>Imagen pendiente</span>
     </div>
   )
 }

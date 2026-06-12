@@ -3,7 +3,6 @@ import ProductImage from '@/components/shared/ProductImage'
 import { useConfigStore } from '@/stores/configStore'
 import { useUIStore } from '@/stores/uiStore'
 import type { Product } from '@/types/product'
-import { picsumUrl } from '@/utils/formatters'
 
 interface ProductCardProps {
   product: Product
@@ -27,8 +26,7 @@ export default function ProductCard({ product }: ProductCardProps) {
       handleClick()
     }
   }
-  const productImage =
-    product.imageUrl ?? product.images?.[0] ?? picsumUrl(product.imgSeed, 500, 667)
+  const productImage = product.imageUrl ?? product.images?.[0]
 
   return (
     <button type='button' className='product-card' onClick={handleClick} onKeyDown={handleKeyDown}>

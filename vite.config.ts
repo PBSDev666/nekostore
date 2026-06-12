@@ -10,7 +10,12 @@ export default defineConfig({
     tailwindcss(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['icons/*.svg'],
+      includeAssets: [
+        'icons/*.svg',
+        'brand/neko-logo-cat.png',
+        'brand/neko-logo-text.png',
+        'fonts/*.ttf',
+      ],
       manifest: {
         name: 'NEKO STORE — Gótica • Oscura • Única',
         short_name: 'NEKO',
@@ -30,8 +35,8 @@ export default defineConfig({
       },
       workbox: {
         importScripts: ['sw-push.js'],
-        globPatterns: ['**/*.{js,css,html,ico,png,svg,woff,woff2}'],
-        globIgnores: ['**/brand/*.png'],
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,woff,woff2,ttf}'],
+        globIgnores: ['**/brand/contacto.png', '**/brand/nosotros.png'],
         navigateFallback: '/index.html',
         navigateFallbackDenylist: [/\/api\//, /^\/offline\.html$/],
         runtimeCaching: [
