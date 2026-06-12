@@ -3,7 +3,7 @@
 
 @font-face {
   font-family: "Pentagram Malefissent";
-  src: url("./assets/fonts/PentagramMalefissent.ttf") format("truetype");
+  src: url("/fonts/PentagramMalefissent.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
 }
@@ -660,11 +660,7 @@ b,
   padding: 0;
 }
 .products-grid--featured {
-  grid-template-columns: repeat(auto-fit, minmax(220px, 270px));
-  justify-content: center;
-  gap: 0;
-  max-width: 1080px;
-  margin: 0 auto;
+  display: none;
 }
 .products-grid__item {
   list-style: none;
@@ -731,14 +727,15 @@ b,
   text-transform: uppercase;
 }
 .featured-section {
-  padding: 0 var(--gutter);
-  max-width: var(--max-width);
+  width: 100%;
+  max-width: 1480px;
   margin: 0 auto;
+  padding: 0;
 }
 .featured-section__footer {
   display: flex;
   justify-content: center;
-  padding: 40px 0 60px;
+  padding: 34px 24px 72px;
 }
 .btn-catalog {
   font-size: 14px;
@@ -746,6 +743,147 @@ b,
   letter-spacing: 2px;
   text-transform: uppercase;
   text-decoration: none;
+}
+
+.featured-metro {
+  width: 100%;
+  margin: 0 auto;
+}
+.featured-metro__heading {
+  max-width: 760px;
+  padding: 78px 48px 34px;
+}
+.featured-metro__heading h2 {
+  color: var(--text);
+  font-family: "Pentagram Malefissent", serif;
+  font-size: clamp(34px, 5vw, 64px);
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  line-height: 0.95;
+  margin-bottom: 16px;
+}
+.featured-metro__heading p {
+  color: var(--text-muted);
+  font-size: 15px;
+  max-width: 620px;
+}
+.featured-metro__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-auto-rows: minmax(230px, 18vw);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  background: var(--border);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.featured-metro__item {
+  min-width: 0;
+  min-height: 0;
+  list-style: none;
+}
+.featured-metro__item--promo {
+  grid-row: span 2;
+}
+.featured-metro__tile--tall {
+  grid-row: span 2;
+}
+.featured-metro__tile--wide {
+  grid-column: span 2;
+}
+.featured-metro__promo,
+.featured-metro__tile {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 230px;
+  overflow: hidden;
+  border: 0;
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  text-align: left;
+}
+.featured-metro__promo:disabled,
+.featured-metro__tile:disabled {
+  cursor: default;
+}
+.featured-metro__promo {
+  min-height: 520px;
+}
+.featured-metro__shade {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(5, 5, 8, 0.08), rgba(5, 5, 8, 0.18) 36%, rgba(5, 5, 8, 0.88)),
+    radial-gradient(circle at 16% 18%, rgba(201, 169, 110, 0.24), transparent 32%);
+  pointer-events: none;
+}
+.featured-metro__promo-body,
+.featured-metro__meta {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  padding: clamp(22px, 3vw, 44px);
+}
+.featured-metro__promo-body {
+  max-width: 640px;
+}
+.featured-metro__kicker,
+.featured-metro__price,
+.featured-metro__countdown {
+  font-family: "Space Mono", monospace;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.featured-metro__kicker {
+  color: var(--gold-light);
+  font-size: 10px;
+}
+.featured-metro__promo-title {
+  color: #fff;
+  font-family: "Pentagram Malefissent", serif;
+  font-size: clamp(36px, 6vw, 78px);
+  line-height: 0.9;
+  letter-spacing: 0.04em;
+}
+.featured-metro__promo-copy {
+  color: rgba(255, 255, 255, 0.78);
+  max-width: 420px;
+  font-size: 15px;
+  line-height: 1.55;
+}
+.featured-metro__countdown {
+  margin-top: 10px;
+  border: 1px solid rgba(201, 169, 110, 0.45);
+  background: rgba(5, 5, 8, 0.62);
+  color: var(--gold-light);
+  font-size: clamp(18px, 3vw, 34px);
+  line-height: 1;
+  padding: 12px 16px;
+}
+.featured-metro__name {
+  color: #fff;
+  font-family: "Pentagram Malefissent", serif;
+  font-size: clamp(22px, 3vw, 38px);
+  line-height: 1;
+  letter-spacing: 0.04em;
+  max-width: 520px;
+}
+.featured-metro__price {
+  color: var(--gold-light);
+  font-size: 12px;
+  font-weight: 700;
 }
 
 /* ---- PWA INSTALL ---- */
@@ -862,6 +1000,7 @@ b,
   position: relative;
   overflow: hidden;
   cursor: pointer;
+  width: 100%;
   transition:
     transform 0.3s,
     box-shadow 0.3s;
@@ -956,6 +1095,23 @@ b,
 .product-card:hover .product-card__img-tag {
   transform: scale(1.08);
   filter: saturate(1);
+}
+.featured-metro__tile .product-image,
+.featured-metro__promo .product-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  filter: saturate(0.82) contrast(1.04);
+  transform: scale(1.01);
+  transition:
+    filter 0.35s ease,
+    transform 0.55s ease;
+}
+.featured-metro__tile:hover .product-image,
+.featured-metro__promo:hover .product-image {
+  filter: saturate(1) contrast(1.1);
+  transform: scale(1.06);
 }
 .product-card__badge {
   position: absolute;
@@ -2745,6 +2901,37 @@ b,
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 0;
   }
+  .featured-metro__heading {
+    padding: 54px 24px 28px;
+  }
+  .featured-metro__grid {
+    grid-template-columns: 1fr;
+    grid-auto-rows: minmax(260px, auto);
+  }
+  .featured-metro__item--promo,
+  .featured-metro__tile--tall,
+  .featured-metro__tile--wide {
+    grid-column: auto;
+    grid-row: auto;
+  }
+  .featured-metro__promo {
+    min-height: 560px;
+  }
+  .featured-metro__tile {
+    min-height: 320px;
+  }
+  .featured-metro__promo-body,
+  .featured-metro__meta {
+    gap: 7px;
+  }
+  .featured-metro__name {
+    font-size: clamp(24px, 7vw, 34px);
+    line-height: 0.96;
+    max-width: 100%;
+  }
+  .featured-metro__price {
+    font-size: 11px;
+  }
   .pwa-section {
     grid-template-columns: 1fr;
     gap: 22px;
@@ -2868,6 +3055,40 @@ b,
   }
   .products-grid--featured {
     grid-template-columns: minmax(0, 1fr);
+  }
+  .featured-section__footer {
+    padding: 28px 18px 58px;
+  }
+  .featured-metro__heading {
+    padding: 44px 18px 24px;
+  }
+  .featured-metro__promo {
+    min-height: 500px;
+  }
+  .featured-metro__tile {
+    min-height: 300px;
+  }
+  .featured-metro__promo-body,
+  .featured-metro__meta {
+    padding: 22px;
+  }
+  .featured-metro__promo-title {
+    font-size: 34px;
+  }
+  .featured-metro__promo-copy {
+    font-size: 13px;
+    line-height: 1.45;
+  }
+  .featured-metro__countdown {
+    font-size: 20px;
+    padding: 10px 12px;
+  }
+  .featured-metro__name {
+    font-size: 24px;
+    line-height: 0.95;
+  }
+  .featured-metro__kicker {
+    font-size: 8px;
   }
   .carousel__content {
     padding: 0 24px;

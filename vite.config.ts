@@ -5,6 +5,12 @@ import { defineConfig } from 'vite'
 import { VitePWA } from 'vite-plugin-pwa'
 
 export default defineConfig({
+  server: {
+    allowedHosts: ['nekostore-frontend-production.up.railway.app'],
+  },
+  preview: {
+    allowedHosts: ['nekostore-frontend-production.up.railway.app'],
+  },
   plugins: [
     react(),
     tailwindcss(),
