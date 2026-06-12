@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { picsumUrl } from '@/utils/formatters'
 
 interface ProductImageProps {
   seed?: string
@@ -18,6 +19,11 @@ function ProductPlaceholder({ alt }: { alt: string }) {
   )
 }
 
+function resolveImageSrc(seed: string): string {
+  if (/^(https?:)?\/\//.test(seed) || seed.startsWith('/')) return seed
+  return picsumUrl(seed, 500, 667)
+}
+
 export default function ProductImage({ seed, alt, className }: ProductImageProps) {
   const [error, setError] = useState(false)
   const [loading, setLoading] = useState(true)
@@ -26,14 +32,15 @@ export default function ProductImage({ seed, alt, className }: ProductImageProps
   if (!src || error) {
     return <ProductPlaceholder alt={alt} />
   }
+  const imageSrc = resolveImageSrc(src)
 
   return (
     <>
       {loading && <div className='product-image-skeleton' aria-hidden='true' />}
       <img
-        src={src}
+        src={imageSrc}
         alt={alt}
-        className={className}
+        className={`product-image ${className ?? ''}`.trim()}
         loading='lazy'
         onLoad={() => setLoading(false)}
         onError={() => {

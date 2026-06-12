@@ -1,0 +1,82 @@
+UPDATE products
+SET images = image_defaults.images::jsonb,
+    updated_at = NOW()
+FROM (
+  VALUES
+    ('1', '["https://images.unsplash.com/photo-1566206091558-7f218b696731?w=900&h=1200&fit=crop&q=80"]'),
+    ('2', '["https://images.unsplash.com/photo-1621784562877-7e18e06e0e4b?w=900&h=1200&fit=crop&q=80"]'),
+    ('3', '["https://images.unsplash.com/photo-1509631179647-0177331693ae?w=900&h=1200&fit=crop&q=80"]'),
+    ('4', '["https://images.unsplash.com/photo-1615562536704-94e7f1c38a06?w=900&h=1200&fit=crop&q=80"]'),
+    ('5', '["https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=900&h=1200&fit=crop&q=80"]'),
+    ('6', '["https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=900&h=1200&fit=crop&q=80"]'),
+    ('7', '["https://images.unsplash.com/photo-1518611012118-696072aa579a?w=900&h=1200&fit=crop&q=80"]'),
+    ('8', '["https://images.unsplash.com/photo-1573408301185-9519f94815b0?w=900&h=1200&fit=crop&q=80"]'),
+    ('9', '["https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=900&h=1200&fit=crop&q=80"]'),
+    ('10', '["https://images.unsplash.com/photo-1566206091558-7f218b696731?w=900&h=1200&fit=crop&q=80"]'),
+    ('11', '["https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=900&h=1200&fit=crop&q=80"]'),
+    ('12', '["https://images.unsplash.com/photo-1621784562877-7e18e06e0e4b?w=900&h=1200&fit=crop&q=80"]'),
+    ('13', '["https://images.unsplash.com/photo-1515377905703-c4788e51af15?w=900&h=1200&fit=crop&q=80"]'),
+    ('14', '["https://images.unsplash.com/photo-1564257631407-4deb1f99d992?w=900&h=1200&fit=crop&q=80"]'),
+    ('15', '["https://images.unsplash.com/photo-1593030761757-71fae45fa0e7?w=900&h=1200&fit=crop&q=80"]'),
+    ('16', '["https://images.unsplash.com/photo-1606768666853-403c90c981ad?w=900&h=1200&fit=crop&q=80"]'),
+    ('17', '["https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?w=900&h=1200&fit=crop&q=80"]'),
+    ('18', '["https://images.unsplash.com/photo-1509631179647-0177331693ae?w=900&h=1200&fit=crop&q=80"]'),
+    ('19', '["https://images.unsplash.com/photo-1515377905703-c4788e51af15?w=900&h=1200&fit=crop&q=80"]'),
+    ('20', '["https://images.unsplash.com/photo-1564257631407-4deb1f99d992?w=900&h=1200&fit=crop&q=80"]'),
+    ('21', '["https://images.unsplash.com/photo-1573408301185-9519f94815b0?w=900&h=1200&fit=crop&q=80"]'),
+    ('22', '["https://images.unsplash.com/photo-1593030761757-71fae45fa0e7?w=900&h=1200&fit=crop&q=80"]'),
+    ('23', '["https://images.unsplash.com/photo-1564257631407-4deb1f99d992?w=900&h=1200&fit=crop&q=80"]'),
+    ('24', '["https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=900&h=1200&fit=crop&q=80"]'),
+    ('25', '["https://images.unsplash.com/photo-1606768666853-403c90c981ad?w=900&h=1200&fit=crop&q=80"]'),
+    ('26', '["https://images.unsplash.com/photo-1509631179647-0177331693ae?w=900&h=1200&fit=crop&q=80"]'),
+    ('27', '["https://images.unsplash.com/photo-1515377905703-c4788e51af15?w=900&h=1200&fit=crop&q=80"]'),
+    ('28', '["https://images.unsplash.com/photo-1566206091558-7f218b696731?w=900&h=1200&fit=crop&q=80"]'),
+    ('29', '["https://images.unsplash.com/photo-1621784562877-7e18e06e0e4b?w=900&h=1200&fit=crop&q=80"]'),
+    ('30', '["https://images.unsplash.com/photo-1573408301185-9519f94815b0?w=900&h=1200&fit=crop&q=80"]'),
+    ('31', '["https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=900&h=1200&fit=crop&q=80"]'),
+    ('32', '["https://images.unsplash.com/photo-1564257631407-4deb1f99d992?w=900&h=1200&fit=crop&q=80"]'),
+    ('33', '["https://images.unsplash.com/photo-1593030761757-71fae45fa0e7?w=900&h=1200&fit=crop&q=80"]'),
+    ('34', '["https://images.unsplash.com/photo-1606768666853-403c90c981ad?w=900&h=1200&fit=crop&q=80"]'),
+    ('35', '["https://images.unsplash.com/photo-1518611012118-696072aa579a?w=900&h=1200&fit=crop&q=80"]'),
+    ('36', '["https://images.unsplash.com/photo-1564257631407-4deb1f99d992?w=900&h=1200&fit=crop&q=80"]'),
+    ('37', '["https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?w=900&h=1200&fit=crop&q=80"]'),
+    ('38', '["https://images.unsplash.com/photo-1606768666853-403c90c981ad?w=900&h=1200&fit=crop&q=80"]'),
+    ('39', '["https://images.unsplash.com/photo-1566206091558-7f218b696731?w=900&h=1200&fit=crop&q=80"]'),
+    ('40', '["https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=900&h=1200&fit=crop&q=80"]'),
+    ('41', '["https://images.unsplash.com/photo-1621784562877-7e18e06e0e4b?w=900&h=1200&fit=crop&q=80"]'),
+    ('42', '["https://images.unsplash.com/photo-1573408301185-9519f94815b0?w=900&h=1200&fit=crop&q=80"]'),
+    ('43', '["https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=900&h=1200&fit=crop&q=80"]'),
+    ('44', '["https://images.unsplash.com/photo-1564257631407-4deb1f99d992?w=900&h=1200&fit=crop&q=80"]'),
+    ('45', '["https://images.unsplash.com/photo-1509631179647-0177331693ae?w=900&h=1200&fit=crop&q=80"]'),
+    ('46', '["https://images.unsplash.com/photo-1606768666853-403c90c981ad?w=900&h=1200&fit=crop&q=80"]'),
+    ('47', '["https://images.unsplash.com/photo-1518611012118-696072aa579a?w=900&h=1200&fit=crop&q=80"]'),
+    ('48', '["https://images.unsplash.com/photo-1515377905703-c4788e51af15?w=900&h=1200&fit=crop&q=80"]'),
+    ('49', '["https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=900&h=1200&fit=crop&q=80"]'),
+    ('50', '["https://images.unsplash.com/photo-1573408301185-9519f94815b0?w=900&h=1200&fit=crop&q=80"]'),
+    ('51', '["https://images.unsplash.com/photo-1566206091558-7f218b696731?w=900&h=1200&fit=crop&q=80"]'),
+    ('52', '["https://images.unsplash.com/photo-1509631179647-0177331693ae?w=900&h=1200&fit=crop&q=80"]'),
+    ('53', '["https://images.unsplash.com/photo-1621784562877-7e18e06e0e4b?w=900&h=1200&fit=crop&q=80"]'),
+    ('54', '["https://images.unsplash.com/photo-1564257631407-4deb1f99d992?w=900&h=1200&fit=crop&q=80"]'),
+    ('55', '["https://images.unsplash.com/photo-1593030761757-71fae45fa0e7?w=900&h=1200&fit=crop&q=80"]'),
+    ('demo-vestido-01', '["https://images.unsplash.com/photo-1566206091558-7f218b696731?w=900&h=1200&fit=crop&q=80"]'),
+    ('demo-vestido-02', '["https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=900&h=1200&fit=crop&q=80"]'),
+    ('demo-vestido-03', '["https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?w=900&h=1200&fit=crop&q=80"]'),
+    ('demo-top-01', '["https://images.unsplash.com/photo-1621784562877-7e18e06e0e4b?w=900&h=1200&fit=crop&q=80"]'),
+    ('demo-top-02', '["https://images.unsplash.com/photo-1564257631407-4deb1f99d992?w=900&h=1200&fit=crop&q=80"]'),
+    ('demo-top-03', '["https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=900&h=1200&fit=crop&q=80"]'),
+    ('demo-conjunto-01', '["https://images.unsplash.com/photo-1509631179647-0177331693ae?w=900&h=1200&fit=crop&q=80"]'),
+    ('demo-conjunto-02', '["https://images.unsplash.com/photo-1593030761757-71fae45fa0e7?w=900&h=1200&fit=crop&q=80"]'),
+    ('demo-conjunto-03', '["https://images.unsplash.com/photo-1518611012118-696072aa579a?w=900&h=1200&fit=crop&q=80"]'),
+    ('demo-accesorio-01', '["https://images.unsplash.com/photo-1573408301185-9519f94815b0?w=900&h=1200&fit=crop&q=80"]'),
+    ('demo-accesorio-02', '["https://images.unsplash.com/photo-1606768666853-403c90c981ad?w=900&h=1200&fit=crop&q=80"]'),
+    ('demo-accesorio-03', '["https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=900&h=1200&fit=crop&q=80"]')
+) AS image_defaults(id, images)
+WHERE products.id = image_defaults.id
+  AND (
+    products.images IS NULL
+    OR products.images = '[]'::jsonb
+    OR (
+      jsonb_typeof(products.images) = 'array'
+      AND jsonb_array_length(products.images) = 0
+    )
+  );

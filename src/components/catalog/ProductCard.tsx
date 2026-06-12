@@ -3,6 +3,7 @@ import ProductImage from '@/components/shared/ProductImage'
 import { useConfigStore } from '@/stores/configStore'
 import { useUIStore } from '@/stores/uiStore'
 import type { Product } from '@/types/product'
+import { picsumUrl } from '@/utils/formatters'
 
 interface ProductCardProps {
   product: Product
@@ -26,11 +27,13 @@ export default function ProductCard({ product }: ProductCardProps) {
       handleClick()
     }
   }
+  const productImage =
+    product.imageUrl ?? product.images?.[0] ?? picsumUrl(product.imgSeed, 500, 667)
 
   return (
     <button type='button' className='product-card' onClick={handleClick} onKeyDown={handleKeyDown}>
       <div className='product-card__img'>
-        <ProductImage seed={product.imageUrl ?? product.images?.[0]} alt={product.name} />
+        <ProductImage seed={productImage} alt={product.name} />
         {product.badge && <Badge type={product.badge} />}
         {product.isNew && <Badge type='new' />}
         <div className='product-card__overlay'>
