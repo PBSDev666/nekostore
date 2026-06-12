@@ -58,14 +58,14 @@ export default function AdminPage() {
   const logout = useAuthStore((s) => s.logout)
   const twoFactor = useCMSStore((s) => s.twoFactor)
   const fetch2FAStatus = useCMSStore((s) => s.fetch2FAStatus)
-  const [securityChecked, setSecurityChecked] = useState(false)
+  // const [securityChecked, setSecurityChecked] = useState(false)
   const admin = getCurrentCustomer()
 
   useEffect(() => {
     if (!token || admin?.role !== 'admin') return
 
-    setSecurityChecked(false)
-    fetch2FAStatus().finally(() => setSecurityChecked(true))
+    //setSecurityChecked(false)
+    //fetch2FAStatus().finally(() => setSecurityChecked(true))
     console.log(token, admin)
   }, [token, admin?.role, fetch2FAStatus])
 
@@ -73,13 +73,13 @@ export default function AdminPage() {
   //   return <AdminLogin />
   // }
 
-  if (!securityChecked) {
-    return (
-      <div className='admin-page'>
-        <div className='admin-panel-empty'>Validando seguridad del panel...</div>
-      </div>
-    )
-  }
+  // if (!securityChecked) {
+  //   return (
+  //     <div className='admin-page'>
+  //       <div className='admin-panel-empty'>Validando seguridad del panel...</div>
+  //     </div>
+  //   )
+  // }
 
   const filteredPosts = postFilter === 'all' ? posts : posts.filter((p) => p.status === postFilter)
   const has2FA = twoFactor.enabled
