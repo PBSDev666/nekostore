@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { picsumUrl } from '@/utils/formatters'
+import { publicAsset } from '@/utils/publicAsset'
 
 interface ProductImageProps {
   seed?: string
@@ -14,13 +15,13 @@ function ProductPlaceholder({ alt }: { alt: string }) {
     <div className='product-image-placeholder' role='img' aria-label={alt}>
       <img
         className='product-image-placeholder__cat'
-        src='/brand/neko-logo-cat.png'
+        src={publicAsset('brand/neko-logo-cat.png')}
         alt=''
         aria-hidden='true'
       />
       <img
         className='product-image-placeholder__wordmark'
-        src='/brand/neko-logo-text.png'
+        src={publicAsset('brand/neko-logo-text.png')}
         alt='NEKO Store'
       />
       <span className='product-image-placeholder__copy'>Imagen pendiente</span>

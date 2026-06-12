@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { useConfigStore } from '@/stores/configStore'
+import { publicAsset } from '@/utils/publicAsset'
 
 export default function Footer() {
   const navigate = useNavigate()
@@ -9,7 +10,11 @@ export default function Footer() {
     <footer className='footer'>
       <div className='footer__inner'>
         <div className='footer__brand'>
-          <img className='footer-logo-wordmark' src='/brand/neko-logo-text.png' alt='Neko Store' />
+          <img
+            className='footer-logo-wordmark'
+            src={publicAsset('brand/neko-logo-text.png')}
+            alt='Neko Store'
+          />
           <p id='footerTagline'>{config.storeTagline}</p>
           <p className='footer-cr'>🇨🇷 San Ramon de Alajuela, Costa Rica</p>
         </div>

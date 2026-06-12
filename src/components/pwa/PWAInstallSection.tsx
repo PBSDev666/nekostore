@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useInstallPrompt } from '@/hooks/useInstallPrompt'
+import { publicAsset } from '@/utils/publicAsset'
 
 export default function PWAInstallSection() {
   const { canInstall, install } = useInstallPrompt()
@@ -27,7 +28,7 @@ export default function PWAInstallSection() {
       <div className='pwa-section__visual' aria-hidden='true'>
         <div className='pwa-phone'>
           <div className='pwa-phone__bar' />
-          <img className='pwa-phone__logo' src='/brand/neko-logo-cat.png' alt='' />
+          <img className='pwa-phone__logo' src={publicAsset('brand/neko-logo-cat.png')} alt='' />
           <strong>PWA</strong>
           <span>Catalogo, pedidos, cuenta y alertas</span>
         </div>

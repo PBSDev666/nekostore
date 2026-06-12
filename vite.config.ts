@@ -25,7 +25,8 @@ export default defineConfig({
         display: 'standalone',
         orientation: 'portrait',
         lang: 'es',
-        start_url: '/',
+        start_url: '.',
+        scope: '.',
         icons: [
           { src: 'icons/icon-48x48.svg', sizes: '48x48', type: 'image/svg+xml' },
           { src: 'icons/icon-96x96.svg', sizes: '96x96', type: 'image/svg+xml' },

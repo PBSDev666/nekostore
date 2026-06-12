@@ -36,6 +36,14 @@
     }
     .retry-btn:hover { background: #d4af37; color: #050508; }
   </style>
+  <script>
+    if (navigator.onLine && location.pathname !== '/offline.html' && 'serviceWorker' in navigator) {
+      navigator.serviceWorker
+        .getRegistrations()
+        .then((registrations) => Promise.all(registrations.map((registration) => registration.unregister())))
+        .finally(() => location.reload())
+    }
+  </script>
 </head>
 <body>
   <div class="offline-container">

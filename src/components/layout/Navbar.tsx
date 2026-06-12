@@ -5,6 +5,7 @@ import { useAuthStore } from '@/stores/authStore'
 import { useCartStore } from '@/stores/cartStore'
 import { useNotificationStore } from '@/stores/notificationStore'
 import { useUIStore } from '@/stores/uiStore'
+import { publicAsset } from '@/utils/publicAsset'
 import ThemeToggle from './ThemeToggle'
 
 const NAV_LINKS = [
@@ -38,8 +39,17 @@ export default function Navbar() {
   return (
     <nav className={`navbar ${menuOpen ? 'navbar--open' : ''}`} aria-label='Navegación principal'>
       <button className='navbar__logo' onClick={() => goTo('/')} type='button'>
-        <img className='logo-mark' src='/brand/neko-logo-cat.png' alt='' aria-hidden='true' />
-        <img className='logo-wordmark' src='/brand/neko-logo-text.png' alt='Neko Store' />
+        <img
+          className='logo-mark'
+          src={publicAsset('brand/neko-logo-cat.png')}
+          alt=''
+          aria-hidden='true'
+        />
+        <img
+          className='logo-wordmark'
+          src={publicAsset('brand/neko-logo-text.png')}
+          alt='Neko Store'
+        />
       </button>
 
       <button

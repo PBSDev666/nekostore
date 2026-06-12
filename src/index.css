@@ -3,7 +3,7 @@
 
 @font-face {
   font-family: "Pentagram Malefissent";
-  src: url("/fonts/PentagramMalefissent.ttf") format("truetype");
+  src: url("./assets/fonts/PentagramMalefissent.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
 }
